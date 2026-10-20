@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мои заявки — Конференции.РФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/"><strong>Конференции.РФ</strong><span>Заявки пользователя</span></a>
+      <nav></nav>
+    </header>
+    <main class="content">
+      <div class="card">
+        <h1>Мои заявки</h1>
+        <p class="lede">Просмотрите ранее оставленные заявки и оставьте отзыв о качестве проведенного мероприятия.</p>
+        <div id="list"></div>
+      </div>
+    </main>
+  </div>
+  <script src="/js/common.js"></script>
+  <script>
+    function reviewBlock(app) {
+      if (app.review) {
+        return `<div class="review-box">Отзыв: ${"★".repeat(app.review.rating)}${"☆".repeat(5 - app.review.rating)} — ${app.review.comment}</div>`;
+      }
+      if (app.status !== "Завершено") {
+        return `<div class="review-box">Отзыв станет доступен после статуса «Завершено».</div>`;
+      }
+      return `
+        <form class="form review-box" data-review="${app.id}">
+          <label>Оценка
+            <select name="rating">
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+            </select>
+          </label>
+          <label>Отзыв
+            <textarea name="comment" required minlength="5" placeholder="Как прошло мероприятие?"></textarea>
+          </label>
+          <button class="btn" type="submit">Оставить отзыв</button>
+          <div class="msg"></div>
+        </form>
+      `;
+    }
+
+    async function load() {
+      const user = await currentUser();
+      renderNav(user, "apps");
+      if (!requireRole(user, "user")) return;
+      const { applications } = await api("/api/applications");
+      const list = document.getElementById("list");
+      if (!applications.length) {
+        list.innerHTML = `<div class="empty">Заявок пока нет. <a href="/new-application.html">Сформировать заявку</a></div>`;
+        return;
+      }
+      list.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Помещение</th><th>Дата</th><th>Оплата</th><th>Статус</th></tr>
+          </thead>
+          <tbody>
+            ${applications.map((app) => `
+              <tr>
+                <td>${app.roomName}<br><small>${app.roomType}</small>${reviewBlock(app)}</td>
+                <td>${formatDate(app.startDate)}</td>
+                <td>${app.paymentMethod}</td>
+                <td><span class="status ${statusClass(app.status)}">${app.status}</span></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+      list.querySelectorAll("form[data-review]").forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const msg = form.querySelector(".msg");
+          const body = Object.fromEntries(new FormData(form).entries());
+          try {
+            await api(`/api/applications/${form.dataset.review}/review`, { method: "POST", body });
+            showMessage(msg, "Отзыв сохранен", "ok");
+            load();
+          } catch (error) {
+            showMessage(msg, error.message, "error");
+          }
+        });
+      });
+    }
+    load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <rect width="1200" height="720" fill="#f6efe4"/>
+  <text x="60" y="48" font-family="Georgia, serif" font-size="28" fill="#1b1612">ER-4803@0<<0 · >=D5@5=F88. $</text>
+  <text x="60" y="78" font-family="Segoe UI, sans-serif" font-size="14" fill="#6d6256">PostgreSQL · ?>4A8AB5<0 1@>=8@>20=8O ?><5I5=89</text>
+
+  <g>
+    <rect x="60" y="120" width="250" height="280" rx="12" fill="#fffdf8" stroke="#c4a35a" stroke-width="2"/>
+    <rect x="60" y="120" width="250" height="42" rx="12" fill="#1b1612"/>
+    <rect x="60" y="146" width="250" height="16" fill="#1b1612"/>
+    <text x="185" y="148" text-anchor="middle" fill="#f6efe4" font-family="Georgia, serif" font-size="20">users</text>
+    <text x="80" y="190" font-family="Consolas, monospace" font-size="14" fill="#1b1612">PK  id SERIAL</text>
+    <text x="80" y="214" font-family="Consolas, monospace" font-size="14">UQ  login</text>
+    <text x="80" y="238" font-family="Consolas, monospace" font-size="14">    password_hash</text>
+    <text x="80" y="262" font-family="Consolas, monospace" font-size="14">    full_name</text>
+    <text x="80" y="286" font-family="Consolas, monospace" font-size="14">    phone</text>
+    <text x="80" y="310" font-family="Consolas, monospace" font-size="14">UQ  email</text>
+    <text x="80" y="334" font-family="Consolas, monospace" font-size="14">    role user|admin</text>
+    <text x="80" y="358" font-family="Consolas, monospace" font-size="14">    created_at</text>
+  </g>
+
+  <g>
+    <rect x="890" y="120" width="250" height="210" rx="12" fill="#fffdf8" stroke="#c4a35a" stroke-width="2"/>
+    <rect x="890" y="120" width="250" height="42" rx="12" fill="#1b1612"/>
+    <rect x="890" y="146" width="250" height="16" fill="#1b1612"/>
+    <text x="1015" y="148" text-anchor="middle" fill="#f6efe4" font-family="Georgia, serif" font-size="20">rooms</text>
+    <text x="910" y="190" font-family="Consolas, monospace" font-size="14">PK  id SERIAL</text>
+    <text x="910" y="214" font-family="Consolas, monospace" font-size="14">UQ  name</text>
+    <text x="910" y="238" font-family="Consolas, monospace" font-size="14">    room_type</text>
+    <text x="910" y="262" font-family="Consolas, monospace" font-size="14">    capacity</text>
+    <text x="910" y="286" font-family="Consolas, monospace" font-size="14">    address</text>
+  </g>
+
+  <g>
+    <rect x="430" y="180" width="340" height="250" rx="12" fill="#fffdf8" stroke="#7a2e3a" stroke-width="2"/>
+    <rect x="430" y="180" width="340" height="42" rx="12" fill="#7a2e3a"/>
+    <rect x="430" y="206" width="340" height="16" fill="#7a2e3a"/>
+    <text x="600" y="208" text-anchor="middle" fill="#f6efe4" font-family="Georgia, serif" font-size="20">applications</text>
+    <text x="450" y="250" font-family="Consolas, monospace" font-size="14">PK  id SERIAL</text>
+    <text x="450" y="274" font-family="Consolas, monospace" font-size="14">FK  user_id ’ users.id</text>
+    <text x="450" y="298" font-family="Consolas, monospace" font-size="14">FK  room_id ’ rooms.id</text>
+    <text x="450" y="322" font-family="Consolas, monospace" font-size="14">    start_date</text>
+    <text x="450" y="346" font-family="Consolas, monospace" font-size="14">    payment_method</text>
+    <text x="450" y="370" font-family="Consolas, monospace" font-size="14">    status</text>
+    <text x="450" y="394" font-family="Consolas, monospace" font-size="14">    created_at</text>
+  </g>
+
+  <g>
+    <rect x="430" y="500" width="340" height="180" rx="12" fill="#fffdf8" stroke="#c4a35a" stroke-width="2"/>
+    <rect x="430" y="500" width="340" height="42" rx="12" fill="#1b1612"/>
+    <rect x="430" y="526" width="340" height="16" fill="#1b1612"/>
+    <text x="600" y="528" text-anchor="middle" fill="#f6efe4" font-family="Georgia, serif" font-size="20">reviews</text>
+    <text x="450" y="570" font-family="Consolas, monospace" font-size="14">PK  id SERIAL</text>
+    <text x="450" y="594" font-family="Consolas, monospace" font-size="14">UQ FK application_id</text>
+    <text x="450" y="618" font-family="Consolas, monospace" font-size="14">FK  user_id ’ users.id</text>
+    <text x="450" y="642" font-family="Consolas, monospace" font-size="14">    rating 1..5, comment</text>
+  </g>
+
+  <line x1="310" y1="260" x2="430" y2="280" stroke="#1b1612" stroke-width="2"/>
+  <text x="330" y="248" font-size="12" font-family="Segoe UI, sans-serif">1</text>
+  <text x="400" y="270" font-size="12" font-family="Segoe UI, sans-serif">N</text>
+
+  <line x1="890" y1="230" x2="770" y2="280" stroke="#1b1612" stroke-width="2"/>
+  <text x="860" y="218" font-size="12">1</text>
+  <text x="780" y="270" font-size="12">N</text>
+
+  <line x1="600" y1="430" x2="600" y2="500" stroke="#1b1612" stroke-width="2"/>
+  <text x="612" y="455" font-size="12">1</text>
+  <text x="612" y="490" font-size="12">0..1</text>
+
+  <line x1="185" y1="400" x2="185" y2="590" stroke="#1b1612" stroke-width="2"/>
+  <line x1="185" y1="590" x2="430" y2="590" stroke="#1b1612" stroke-width="2"/>
+  <text x="195" y="500" font-size="12">1</text>
+  <text x="360" y="580" font-size="12">N</text>
+</svg>

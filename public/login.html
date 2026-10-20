@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Авторизация — Конференции.РФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/"><strong>Конференции.РФ</strong><span>Вход в систему</span></a>
+      <nav></nav>
+    </header>
+    <main class="content">
+      <div class="card">
+        <h1>Авторизация</h1>
+        <p class="lede">Введите логин и пароль зарегистрированного пользователя.</p>
+        <form class="form" id="loginForm">
+          <label>Логин
+            <input name="login" required>
+          </label>
+          <label>Пароль
+            <input name="password" type="password" required>
+          </label>
+          <div class="actions">
+            <button class="btn gold" type="submit">Войти</button>
+            <a href="/register.html">Еще не зарегистрированы? Регистрация</a>
+          </div>
+          <div class="msg" id="message"></div>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script src="/js/common.js"></script>
+  <script>
+    currentUser().then((user) => {
+      renderNav(user, "login");
+      requireGuest(user);
+    });
+    document.getElementById("loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const payload = Object.fromEntries(new FormData(event.target).entries());
+      const message = document.getElementById("message");
+      try {
+        const data = await api("/api/auth/login", { method: "POST", body: payload });
+        location.href = data.user.role === "admin" ? "/admin.html" : "/applications.html";
+      } catch (error) {
+        showMessage(message, error.message, "error");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Новая заявка — Конференции.РФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/"><strong>Конференции.РФ</strong><span>Формирование заявки</span></a>
+      <nav></nav>
+    </header>
+    <main class="content">
+      <div class="grid">
+        <div class="card">
+          <h1>Новая заявка</h1>
+          <p class="lede">Укажите помещение, дату начала конференции и способ оплаты. Заявка поступит администратору со статусом «Новая».</p>
+          <form class="form" id="appForm">
+            <label>Название помещения
+              <input name="roomName" required placeholder="Например, Аудитория Пушкин">
+            </label>
+            <label>Желаемая дата начала
+              <input name="startDate" type="text" required placeholder="ДД.ММ.ГГГГ">
+            </label>
+            <label>Способ оплаты
+              <select name="paymentMethod" required>
+                <option value="очное посещение">При очном посещении</option>
+                <option value="СБП">Переводом по системе СБП</option>
+              </select>
+            </label>
+            <div class="actions">
+              <button class="btn gold" type="submit">Отправить</button>
+            </div>
+            <div class="msg" id="message"></div>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Доступные помещения</h2>
+          <ul class="hint-list" id="rooms"></ul>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/js/common.js"></script>
+  <script>
+    async function init() {
+      const user = await currentUser();
+      renderNav(user, "new");
+      if (!requireRole(user, "user")) return;
+      const { rooms } = await api("/api/rooms");
+      document.getElementById("rooms").innerHTML = rooms
+        .map((room) => `<li><b>${room.name}</b> — ${room.roomType}, ${room.capacity} мест, ${room.address}</li>`)
+        .join("");
+    }
+    init();
+    document.getElementById("appForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const message = document.getElementById("message");
+      const payload = Object.fromEntries(new FormData(event.target).entries());
+      try {
+        await api("/api/applications", { method: "POST", body: payload });
+        showMessage(message, "Заявка отправлена на рассмотрение", "ok");
+        setTimeout(() => { location.href = "/applications.html"; }, 700);
+      } catch (error) {
+        showMessage(message, error.message, "error");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -6,15 +6,17 @@
 
 ## Запуск
 
-1. Установите [Docker Desktop](https://www.docker.com/products/docker-desktop/) и Node.js 18+.
+1. Установите Node.js 18+ и PostgreSQL 18 (или Docker Desktop).
 2. Скопируйте `.env.example` в `.env`.
 3. Поднимите базу и сервер:
 
 ```bash
-docker compose up -d
+npm run db:local
 npm install
 npm start
 ```
+
+Альтернатива через Docker: `docker compose up -d`.
 
 Приложение: http://localhost:3000
 

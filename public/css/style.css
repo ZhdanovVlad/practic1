@@ -1,0 +1,291 @@
+:root {
+  --bg: #14110f;
+  --bg-soft: #1e1a16;
+  --paper: #f6efe4;
+  --paper-2: #efe4d2;
+  --ink: #1b1612;
+  --muted: #6d6256;
+  --gold: #c4a35a;
+  --gold-dark: #9b7b32;
+  --wine: #7a2e3a;
+  --ok: #2f6b4f;
+  --err: #9b2c2c;
+  --line: rgba(196, 163, 90, 0.35);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(196, 163, 90, 0.18), transparent 50%),
+    linear-gradient(180deg, #1a1612 0%, #241d17 40%, #1a1612 100%);
+}
+
+a {
+  color: var(--gold-dark);
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 7%;
+  color: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand strong {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+}
+
+.brand span {
+  font-size: 12px;
+  color: #d7c7ae;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+nav a,
+nav button.linkish {
+  color: var(--paper);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+}
+
+nav a.active,
+nav a:hover,
+nav button.linkish:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.hero,
+.content {
+  width: min(1100px, 90%);
+  margin: 32px auto 48px;
+}
+
+.card {
+  background: var(--paper);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 32px;
+}
+
+h1,
+h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  margin: 0 0 8px;
+}
+
+h1 {
+  font-size: 42px;
+}
+
+.lede {
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #d9ccb8;
+  background: #fffdf8;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.btn {
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.btn.gold {
+  background: linear-gradient(180deg, #d4b56a, var(--gold-dark));
+  color: #1b1612;
+  font-weight: 700;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.msg {
+  min-height: 1.3em;
+  font-size: 14px;
+}
+
+.msg.error {
+  color: var(--err);
+}
+
+.msg.ok {
+  color: var(--ok);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+}
+
+.hint-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid #eadcc8;
+  vertical-align: top;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.new {
+  background: #f3e2b3;
+}
+
+.status.scheduled {
+  background: #d5e8d8;
+}
+
+.status.done {
+  background: #d9d3ea;
+}
+
+.review-box,
+.empty {
+  background: var(--paper-2);
+  border-radius: 16px;
+  padding: 14px;
+  margin-top: 10px;
+}
+
+.landing {
+  color: var(--paper);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.landing .card {
+  color: var(--ink);
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+footer {
+  margin-top: auto;
+  padding: 18px 7% 28px;
+  color: #b7aa98;
+  font-size: 13px;
+}
+
+@media (max-width: 860px) {
+  .grid,
+  .landing {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

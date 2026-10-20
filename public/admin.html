@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель администратора — Конференции.РФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/"><strong>Конференции.РФ</strong><span>Панель администратора</span></a>
+      <nav></nav>
+    </header>
+    <main class="content">
+      <div class="card">
+        <h1>Все заявки</h1>
+        <p class="lede">Изначально заявка имеет статус «Новая». После проверки можно назначить «Мероприятие назначено» или «Завершено».</p>
+        <div id="list"></div>
+      </div>
+    </main>
+  </div>
+  <script src="/js/common.js"></script>
+  <script>
+    async function load() {
+      const user = await currentUser();
+      renderNav(user, "admin");
+      if (!requireRole(user, "admin")) return;
+      const { applications } = await api("/api/admin/applications");
+      const list = document.getElementById("list");
+      if (!applications.length) {
+        list.innerHTML = `<div class="empty">Заявок от пользователей пока нет.</div>`;
+        return;
+      }
+      list.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Пользователь</th>
+              <th>Помещение</th>
+              <th>Дата</th>
+              <th>Оплата</th>
+              <th>Статус</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${applications.map((app) => `
+              <tr>
+                <td>${app.userFullName}<br><small>${app.userLogin}</small></td>
+                <td>${app.roomName}<br><small>${app.roomType}</small></td>
+                <td>${formatDate(app.startDate)}</td>
+                <td>${app.paymentMethod}</td>
+                <td>
+                  <select data-status="${app.id}">
+                    ${["Новая", "Мероприятие назначено", "Завершено"].map((status) =>
+                      `<option ${status === app.status ? "selected" : ""}>${status}</option>`
+                    ).join("")}
+                  </select>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+      list.querySelectorAll("select[data-status]").forEach((select) => {
+        select.addEventListener("change", async () => {
+          await api(`/api/admin/applications/${select.dataset.status}/status`, {
+            method: "PATCH",
+            body: { status: select.value }
+          });
+        });
+      });
+    }
+    load();
+  </script>
+</body>
+</html>

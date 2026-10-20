@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация — Конференции.РФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/"><strong>Конференции.РФ</strong><span>Создание пользователя</span></a>
+      <nav></nav>
+    </header>
+    <main class="content">
+      <div class="card">
+        <h1>Регистрация</h1>
+        <p class="lede">Все поля обязательны для заполнения.</p>
+        <form class="form" id="registerForm">
+          <label>Логин
+            <input name="login" required minlength="6" placeholder="latin123">
+          </label>
+          <label>Пароль
+            <input name="password" type="password" required minlength="8">
+          </label>
+          <label>ФИО
+            <input name="fullName" required placeholder="Иванов Иван Иванович">
+          </label>
+          <label>Телефон
+            <input name="phone" id="phone" required placeholder="8(XXX)XXX-XX-XX">
+          </label>
+          <label>Адрес электронной почты
+            <input name="email" type="email" required placeholder="name@example.ru">
+          </label>
+          <div class="actions">
+            <button class="btn gold" type="submit">Создать пользователя</button>
+            <a href="/login.html">Уже зарегистрированы? Авторизация</a>
+          </div>
+          <div class="msg" id="message"></div>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script src="/js/common.js"></script>
+  <script>
+    currentUser().then((user) => {
+      renderNav(user, "register");
+      requireGuest(user);
+    });
+    maskPhone(document.getElementById("phone"));
+    document.getElementById("registerForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const message = document.getElementById("message");
+      const payload = Object.fromEntries(new FormData(form).entries());
+      try {
+        showMessage(message, "");
+        await api("/api/auth/register", { method: "POST", body: payload });
+        location.href = "/applications.html";
+      } catch (error) {
+        showMessage(message, error.message, "error");
+      }
+    });
+  </script>
+</body>
+</html>
