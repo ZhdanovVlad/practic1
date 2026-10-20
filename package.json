@@ -1,0 +1,23 @@
+{
+  "name": "conferencii-rf",
+  "version": "1.0.0",
+  "description": "Портал Конференции.РФ — бронирование помещений для конференций",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "pg": "^8.13.1"
+  }
+}

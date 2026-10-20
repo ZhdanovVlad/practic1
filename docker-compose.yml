@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: conferencerf-db
+    environment:
+      POSTGRES_DB: conferencerf
+      POSTGRES_USER: conferencerf
+      POSTGRES_PASSWORD: conferencerf
+    ports:
+      - "5433:5432"
+    volumes:
+      - conferencerf_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U conferencerf -d conferencerf"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  conferencerf_pgdata:
